@@ -8,7 +8,10 @@ loop do
   socket = server.accept
   request = socket.gets
   STDERR.puts request
-  response = "Hello World! (#{counter})\n"
+  response = "<pre>" + "GET / HTTP/1.1" +
+                    "Host: localhost:9292" +
+                    "User-Agent: curl/7.51.0" +
+                    "Accept: */*" + "</pre>"
   socket.print "HTTP/1.1 200 OK\r\n" +
                "Content-Type: text/plain\r\n" +
                "Content-Length: #{response.bytesize}\r\n" +
