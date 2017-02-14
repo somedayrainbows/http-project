@@ -42,7 +42,7 @@ class HTTP_yeah
       client.puts headers
       client.puts output
 
-      counter+=
+      @counter += 1
 
       puts ["Wrote this response:", headers, output].join("\n")
       client.close
