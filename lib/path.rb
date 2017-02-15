@@ -19,33 +19,21 @@ class Path
     elsif request == "GET /datetime HTTP/1.1\r\n"
       @counter_requests += 1
       response = Time.now.strftime("%H:%M%p on %A, %B %-d, %Y")
-    elsif request == "GET /word_search?word=orange HTTP/1.1\r\n"
-      binding.pry
-      # need to break up the request string to extract the word (orange in this case)
+    elsif request.split("?")[0] == "GET /word_search"
       finding_word = request.split[1]
       word_i_want = finding_word.partition("=").last
-
-      # once i have the word, need to search for it in the built-in dictionary
       dictionary = []
       File.open("/usr/share/dict/words") do |file|
         file.each do |line|
           dictionary << line.strip
           end
         end
-        dictionary.include?(word_i_want)
-        if true #might have to call above line a var and set this to if var == true
-          puts "#{word_i_want.capitalize} is a known word"
+        if dictionary.include?(word_i_want)
+          response = "#{word_i_want.capitalize} is a known word"
         else
-          puts "#{word_i_want.capitalize} is not a known word"
+          response = "#{word_i_want.capitalize} is not a known word"
         end
-
-      # if found, first response returned
-
-      # if not found, second response returned
-
-
       @counter_requests += 1
-      response = #figure out how to get this to return the appropriate puts statement above based on what is returned from search
     elsif request == "GET /shutdown HTTP/1.1\r\n"
       @counter_requests += 1
       response = "Total Requests: #{counter_requests}"

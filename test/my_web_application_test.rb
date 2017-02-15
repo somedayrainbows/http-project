@@ -19,4 +19,9 @@ class MyWebApplicationTest < Minitest::Test
 
 # Faraday.post
 
+
+#response.response_headers  <--is a faraday method
+
+  def test_does_the_word_search_work
+
 end

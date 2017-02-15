@@ -1,5 +1,4 @@
 require './lib/path'
-require './usr/share/dict/words'
 
 require 'pry'
 
