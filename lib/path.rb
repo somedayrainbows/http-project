@@ -13,12 +13,11 @@ class Path
     if request == "GET / HTTP/1.1\r\n"
       response = handle_root #same as path.handle_root
     elsif request == "GET /hello HTTP/1.1\r\n"
-      @counter_requests += 1
-      @counter += 1
-      response = "Hello World! (#{counter})\n"
+      response = handle_hello_counter
     elsif request == "GET /datetime HTTP/1.1\r\n"
-      @counter_requests += 1
-      response = Time.now.strftime("%H:%M%p on %A, %B %-d, %Y")
+      response = handle_datetime
+    elsif request == "GET /shutdown HTTP/1.1\r\n"
+      response = handle_shutdown
     elsif request.split("?")[0] == "GET /word_search"
       finding_word = request.split[1]
       word_i_want = finding_word.partition("=").last
@@ -34,13 +33,9 @@ class Path
           response = "#{word_i_want.capitalize} is not a known word"
         end
       @counter_requests += 1
-    elsif request == "GET /shutdown HTTP/1.1\r\n"
-      @counter_requests += 1
-      response = "Total Requests: #{counter_requests}"
-      @socket_should_close = true
     else
       @counter_requests += 1
-      response = "404 no response!"
+      response = "Sorry, you broke the internet!"
     end
     response
   end
@@ -51,6 +46,23 @@ class Path
     "Host: localhost:9292" +
     "User-Agent: curl/7.51.0" +
     "Accept: */*" + "</pre>"
+  end
+
+  def handle_hello_counter
+    @counter_requests += 1
+    @counter += 1
+    "Hello World! (#{counter})\n"
+  end
+
+  def handle_datetime
+    @counter_requests += 1
+    Time.now.strftime("%H:%M%p on %A, %B %-d, %Y")
+  end
+
+  def handle_shutdown
+    @counter_requests += 1
+    @socket_should_close = true
+    "Total Requests: #{counter_requests}"
   end
 
 end
